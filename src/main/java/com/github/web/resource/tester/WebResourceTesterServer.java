@@ -1,4 +1,4 @@
-package com.github;
+package com.github.web.resource.tester;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
@@ -7,27 +7,27 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-public class WebRequestTesterServer {
+public class WebResourceTesterServer {
+
+    private static final Logger logger = Logger.getLogger(WebResourceTesterServer.class.getName());
 
     /**
      * Launch the server.
      */
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        final WebRequestTesterServer server = new WebRequestTesterServer();
+        final WebResourceTesterServer server = new WebResourceTesterServer();
         server.start();
         server.blockUntilShutdown();
     }
 
-    private static final Logger logger = Logger.getLogger(WebRequestTesterServer.class.getName());
-
     /**
-     * Current server.
+     * Current server instance.
      */
     private Server server;
 
     /**
-     * Start current server
+     * Start current server.
      * @throws IOException
      */
     private void start() throws IOException {
@@ -41,7 +41,7 @@ public class WebRequestTesterServer {
 
             System.err.println("*** Received Shutdown Request");
             try {
-                WebRequestTesterServer.this.stop();
+                WebResourceTesterServer.this.stop();
                 System.err.println("*** Successfully stopped the server");
             } catch (InterruptedException e) {
                 e.printStackTrace(System.err);
@@ -52,6 +52,7 @@ public class WebRequestTesterServer {
 
     /**
      * Await termination.
+     * @throws InterruptedException
      */
     private void blockUntilShutdown() throws InterruptedException {
         if (server != null) {
@@ -59,6 +60,10 @@ public class WebRequestTesterServer {
         }
     }
 
+    /**
+     * Stop current server.
+     * @throws InterruptedException
+     */
     private void stop() throws InterruptedException {
         if (server != null) {
             server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
