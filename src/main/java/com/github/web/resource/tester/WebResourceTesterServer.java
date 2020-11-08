@@ -34,6 +34,7 @@ public class WebResourceTesterServer {
 
         int port = 50055;
         server = ServerBuilder.forPort(port)
+                .addService(new WebResourceTesterServiceImpl())
                 .build();
         logger.info("Server started, listening on " + port);
 
