@@ -1,4 +1,4 @@
-package com.github.web.resource.tester;
+package com.github.web.resource.tester.server;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
@@ -36,6 +36,8 @@ public class WebResourceTesterServer {
         server = ServerBuilder.forPort(port)
                 .addService(new WebResourceTesterServiceImpl())
                 .build();
+
+        server.start();
         logger.info("Server started, listening on " + port);
 
         Runtime.getRuntime().addShutdownHook(new Thread( () -> {
