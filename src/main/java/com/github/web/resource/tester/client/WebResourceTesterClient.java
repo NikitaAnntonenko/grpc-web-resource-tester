@@ -3,10 +3,12 @@ package com.github.web.resource.tester.client;
 import com.proto.web.resource.tester.TestResourceRequest;
 import com.proto.web.resource.tester.TestResourceResponse;
 import com.proto.web.resource.tester.WebResourceTesterServiceGrpc;
+import io.grpc.Deadline;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 import javax.net.ssl.SSLException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class WebResourceTesterClient {
@@ -34,18 +36,18 @@ public class WebResourceTesterClient {
     private void doUnaryCall(ManagedChannel channel) {
 
         WebResourceTesterServiceGrpc.WebResourceTesterServiceBlockingStub client =
-                WebResourceTesterServiceGrpc.newBlockingStub(channel);
-                        //.withDeadline(Deadline.after(5000, TimeUnit.MILLISECONDS));
+                WebResourceTesterServiceGrpc.newBlockingStub(channel)
+                        .withDeadline(Deadline.after(5000, TimeUnit.MILLISECONDS));
 
         TestResourceResponse syncResult = client.testResource(TestResourceRequest.newBuilder()
-                .setResourceUri("https://market.hankuper.com")
+                .setResourceUri("market.hankuper.com")
                 .build());
 
         logger.info("Sync Google status code: " + syncResult.getStatusCode());
         logger.info(String.format("Sync Google duration millis: %d", syncResult.getRequestDuration()));
 
         TestResourceResponse asyncResult = client.testResource(TestResourceRequest.newBuilder()
-                .setResourceUri("https://market.hankuper.com")
+                .setResourceUri("market.hankuper.com")
                 .build());
 
         logger.info("Async Google status code: " + asyncResult.getStatusCode());

@@ -21,7 +21,10 @@ public class WebResourceTesterServiceImpl extends WebResourceTesterServiceGrpc.W
 
     private URI getUriFrom(String uri) {
         try {
-            return new URI(uri);
+            var parsedUri = new URI(uri);
+            return parsedUri.getScheme() == null
+                    ? new URI("https://" + uri)
+                    : parsedUri;
         } catch (URISyntaxException e) {
             return null;
         }
@@ -58,7 +61,7 @@ public class WebResourceTesterServiceImpl extends WebResourceTesterServiceGrpc.W
                     .setRequestDuration(currentRequestDurationMillis)
                     .build());
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | IllegalArgumentException e) {
 
             logger.log(Level.WARNING, e.getLocalizedMessage(), e);
 

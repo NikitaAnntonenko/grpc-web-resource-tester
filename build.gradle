@@ -29,14 +29,19 @@ protobuf {
     }
 }
 
+def grpcVersion = '1.33.1' // CURRENT_GRPC_VERSION
+
 dependencies {
 
-    implementation 'io.grpc:grpc-netty-shaded:1.33.1'
-    implementation 'io.grpc:grpc-protobuf:1.33.1'
-    implementation 'io.grpc:grpc-stub:1.33.1'
+    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'org.jetbrains:annotations:16.0.1'
+
+    testImplementation "io.grpc:grpc-testing:${grpcVersion}"
+    testImplementation "junit:junit:4.12"
 
 }
 
